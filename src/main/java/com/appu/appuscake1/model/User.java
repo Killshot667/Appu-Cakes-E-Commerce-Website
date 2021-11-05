@@ -9,8 +9,17 @@ public class User {
     private String contactNo;
     private String address;
     private String city;
+    private String profileImage;
 
-//    Getters
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    //    Getters
     public int getId() {
         return id;
     }
