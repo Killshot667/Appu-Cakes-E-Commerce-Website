@@ -19,7 +19,6 @@ public class User {
         this.profileImage = profileImage;
     }
 
-    //    Getters
     public int getId() {
         return id;
     }
@@ -52,7 +51,6 @@ public class User {
         return city;
     }
 
-//    Setter
     public void setId(int id) {
         this.id = id;
     }
@@ -83,6 +81,21 @@ public class User {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", contactNo='" + contactNo + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", profileImage='" + profileImage + '\'' +
+                '}';
     }
 }
 

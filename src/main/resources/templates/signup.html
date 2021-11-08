@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup</title>
+</head>
+<body>
+<section>
+    <div class="card text-center">
+        <div class="card-body">
+            <div th:if="${session.message}" th:classappend="${session.message.type}" role="alert">
+                <p class = "text-center" th:text="${session.message.content}"></p>
+            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+            </div>
+            <h1>Create an Account</h1>
+            <form action="" th:action="@{/do_register}" method="post" th:object="${user}">
+                <div class="form-floating mb-3">
+                    <input name="name" type="text" class="form-control" id="floatingInput" placeholder="Name" required th:value="${user.name}">
+                    <label for="floatingInput">Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input name="email" type="email" class="form-control" id="floatingInput" placeholder="Email address" required th:value="${user.email}">
+                    <label for="floatingInput">Email address</label>
+                </div>
+            <div class="form-floating mb-3">
+                <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+                <label for="floatingPassword">Password</label>
+            </div>
+                <div class="form-floating mb-3">
+                    <input name="contactNo" type="text" class="form-control" id="floatingInput" placeholder="Contact no." required th:value="${user.contactNo}">
+                    <label for="floatingInput">Contact no.</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <textarea name="address" class="form-control" id="floatingTextarea2" placeholder="Address" style="height: 100px" required th:value="${user.address}"></textarea>
+                    <label for="floatingTextarea2">Address</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input name="city" type="text" class="form-control" id="floatingInput" placeholder="City" required th:value="${user.city}">
+                    <label for="floatingInput">City</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-success">Reset</button>
+            </form>
+            <br>
+
+            <h7>Already have an account? <a th:href="@{/login}">Log in</a></h7>
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
