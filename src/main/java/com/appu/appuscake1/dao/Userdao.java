@@ -38,6 +38,23 @@ public class Userdao {
         }
     }
 
+    public User getUserByID(int id) {
+        try {
+            String sql = "select * from User where id = ?";
+            return (User) jt.queryForObject(sql, new Object[] { id },
+                    new BeanPropertyRowMapper<>(User.class));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+
+
+    public void update(User user) {
+        String sql="update User set name=?, email=?, password=?, role=?, contactNo=?, address=?, city=?, profileImage=? where id=?";
+        jt.update(sql,user.getName(),user.getEmail(),user.getPassword(),user.getRole(),user.getContactNo(),user.getAddress(),user.getCity(),user.getProfileImage(),user.getId());
+    }
+
 
 
 }

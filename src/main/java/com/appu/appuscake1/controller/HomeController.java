@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 @Controller
 public class HomeController {
@@ -22,13 +24,29 @@ public class HomeController {
     @Autowired
     private Userdao userdao;
 
+    //method for adding common data to response
+    @ModelAttribute
+    public void addCommonData(Model model, Principal principal) {
+        String username = null;
+        if(principal != null)
+            username = principal.getName();
+        if(username!=null)
+            System.out.println("USERNAME " + username);
 
-    @RequestMapping("/home")
+        User user = null;
+        if(username!=null)
+            user = userdao.getUserByEmail(username);
+
+        model.addAttribute("currUser",user);
+    }
+
+
+    @GetMapping("/")
     public String home() {
         return "home";
     }
 
-    @RequestMapping("/signup")
+    @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute("user",new User());
         return "signup";
@@ -36,26 +54,40 @@ public class HomeController {
 
     @RequestMapping("/login")
     public String login() {
-        return "login";
+        return "signin";
+    }
+
+    @RequestMapping("/signin")
+    public String customSignin()
+    {
+        return "signin";
+    }
+
+    @PostMapping("/dologin")
+    public String loginProcess() {
+        return "home";
     }
 
     @PostMapping("/do_register")
     public String do_register(@ModelAttribute("user") User user, Model model, HttpSession session)
     {
         try {
-            user.setRole("USER_ROLE");
+            user.setRole("ROLE_USER");
             user.setProfileImage("default.png");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userdao.save(user);
             model.addAttribute("user",new User());
             session.setAttribute("message",new Message("Registered successfully","alert-success"));
-            return "signup";
+            return "redirect:/signup";
 
         } catch(Exception e) {
             e.printStackTrace();
             model.addAttribute("user", user);
             session.setAttribute("message", new Message("Something went Wrong!! " + e.getMessage(), "alert-danger"));
-            return "signup";
+            return "redirect:/signup";
         }
     }
+
+
+
 }

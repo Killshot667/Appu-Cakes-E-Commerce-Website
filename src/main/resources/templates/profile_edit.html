@@ -2,59 +2,53 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
 <head>
     <meta charset="UTF-8">
-    <title>Signup</title>
+    <title>Signin</title>
 </head>
 <body>
 <section>
-
     <div class="card" style="width: 50rem;margin: auto;">
         <div class="card-body">
 
-            <h5 class="card-title text-center">Register</h5>
+            <h5 class="card-title text-center">Edit Profile</h5>
 
             <div th:if="${session.message}" th:classappend="${session.message.type}" role="alert">
                 <p class = "text-center" th:text="${session.message.content}"></p>
                 <th:block th:text="${#session.removeAttribute('message')}"></th:block>
             </div>
 
-            <form action="" th:action="@{/do_register}" method="post" th:object="${user}">
+            <form action="" th:action="@{/user/process_edit_profile}" method="post" th:object="${currUser}">
+
                 <div class="form-group">
                     <label>Email address</label>
-                    <input name="email" type="email" class="form-control" th:value="${user.email}" required>
+                    <input name="email" type="email" class="form-control" th:value="${currUser.email}" required>
                 </div>
                 <div class="form-group">
                     <label>Name</label>
-                    <input name="name" type="text" class="form-control" th:value="${user.name}" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" name="password" th:value="${user.password}" required>
+                    <input name="name" type="text" class="form-control" th:value="${currUser.name}" required>
                 </div>
                 <div class="form-group">
                     <label>Contact Number</label>
-                    <input name="contactNo" type="text" class="form-control" th:value="${user.contactNo}" required>
+                    <input name="contactNo" type="text" class="form-control" th:value="${currUser.contactNo}" required>
                 </div>
                 <div class="form-group">
                     <label>City</label>
-                    <input name="city" type="text" class="form-control" th:value="${user.city}" required>
+                    <input name="city" type="text" class="form-control" th:value="${currUser.city}" required>
                 </div>
                 <div class="form-group">
                     <label>Address</label>
-                    <textarea name="address" class="form-control" rows="4" th:value="${user.address}" required></textarea>
+                    <textarea name="address" class="form-control" rows="4" th:text="${currUser.address}" required></textarea>
                 </div>
-
+                <br>
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-success">Reset</button>
-
-
             </form>
 
             <br>
 
-            <h7>Already have an account? <a th:href="@{/signin}">Log in</a></h7>
+
         </div>
     </div>
 </section>
 
 </body>
 </html>
+
