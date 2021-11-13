@@ -1,4 +1,335 @@
 package com.appu.appuscake1.controller;
 
+
+import com.appu.appuscake1.dao.Articledao;
+import com.appu.appuscake1.dao.Categorydao;
+import com.appu.appuscake1.dao.Productdao;
+import com.appu.appuscake1.dao.Userdao;
+import com.appu.appuscake1.helper.Message;
+import com.appu.appuscake1.model.Article;
+import com.appu.appuscake1.model.Category;
+import com.appu.appuscake1.model.Product;
+import com.appu.appuscake1.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.security.Principal;
+import java.util.List;
+import java.sql.Date;
+
+@Controller
+@RequestMapping("admin")
 public class AdminController {
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private Userdao userdao;
+
+    @Autowired
+    private Productdao productdao;
+
+    @Autowired
+    private Categorydao categorydao;
+
+    @Autowired
+    private Articledao articledao;
+
+    //method for adding common data to response
+    @ModelAttribute
+    public void addCommonData(Model model, Principal principal) {
+        String username = null;
+        if(principal != null)
+            username = principal.getName();
+        if(username!=null)
+            System.out.println("USERNAME " + username);
+
+        User user = null;
+        if(username!=null)
+            user = userdao.getUserByEmail(username);
+
+        model.addAttribute("currUser",user);
+    }
+
+    @GetMapping("/category-list")
+    public String categoryList(Model model) {
+        List<Category> categories = categorydao.getAllCategories();
+        model.addAttribute("categories",categories);
+        return "category-list";
+    }
+
+    @GetMapping("/category-detail/{cid}")
+    public String categoryDetail(@PathVariable int cid, Model model) {
+        Category category = categorydao.getCategoryByID(cid);
+        model.addAttribute("category",category);
+        return "category-detail";
+    }
+
+    @GetMapping("/category-delete/{cid}")
+    public String categoryDelete(@PathVariable int cid, Model model) {
+        categorydao.delete(cid);
+        return "redirect:/admin/category-list";
+    }
+
+    @GetMapping("/category-edit/{cid}")
+    public String categoryEdit(@PathVariable int cid, Model model) {
+        Category category = categorydao.getCategoryByID(cid);
+        model.addAttribute("category",category);
+        return "category-edit";
+    }
+
+    @PostMapping("/process-category-edit/{cid}")
+    public String processCategoryEdit(@ModelAttribute("category") Category category, @PathVariable int cid, Model model, HttpSession session, Principal principal)
+    {
+        try {
+            category.setId(cid);
+            categorydao.update(category);
+            category = categorydao.getCategoryByID(category.getId());
+            model.addAttribute("category",category);
+            session.setAttribute("message",new Message("Edit successful","alert-success"));
+            return "category-detail";
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            category.setId(cid);
+            category = categorydao.getCategoryByID(category.getId());
+            model.addAttribute("category",category);
+            session.setAttribute("message", new Message("Something went Wrong!! " + e.getMessage(), "alert-danger"));
+            return "category-edit";
+        }
+    }
+
+    @GetMapping("/category-add")
+    public String categoryAdd(Model model) {
+        model.addAttribute("category",new Category());
+        return "category-add";
+    }
+
+    @PostMapping("/process-category-add")
+    public String processCategoryAdd(@ModelAttribute("category") Category category, Model model, HttpSession session)
+    {
+        try {
+
+            categorydao.save(category);
+            model.addAttribute("category",new Category());
+            session.setAttribute("message",new Message("Added successfully","alert-success"));
+            return "category-add";
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            model.addAttribute("category", category);
+            session.setAttribute("message", new Message("Something went Wrong!! " + e.getMessage(), "alert-danger"));
+            return "category-add";
+        }
+    }
+
+
+
+    @GetMapping("/edit-product/{pid}")
+    public String editProduct(@PathVariable int pid, Model model) {
+        Product product = productdao.getProductByID(pid);
+        List<Category> categories = categorydao.getAllCategories();
+        model.addAttribute("product",product);
+        model.addAttribute("categories",categories);
+        return "product-edit";
+    }
+
+    @GetMapping("/article-add")
+    public String articleAdd(Model model) {
+        model.addAttribute("article",new Article());
+        return "article-add";
+    }
+
+    @PostMapping("/process-article-add")
+    public String processArticleAdd(@ModelAttribute("article") Article article, Model model, HttpSession session) {
+        try {
+            int n = article.getContent().length();
+            if(article.getContent().charAt(0)==',')
+                article.setContent(article.getContent().substring(1,n));
+            long millis=System.currentTimeMillis();
+            Date date=new java.sql.Date(millis);
+            article.setDate(date);
+            articledao.save(article);
+            model.addAttribute("article",new Article());
+            session.setAttribute("message",new Message("Added successfully","alert-success"));
+            return "article-add";
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            model.addAttribute("article", article);
+            session.setAttribute("message", new Message("Something went Wrong!! " + e.getMessage(), "alert-danger"));
+            return "article-add";
+        }
+    }
+
+    @GetMapping("/article-detail/{aid}")
+    public String articleDetail(@PathVariable int aid, Model model) {
+        Article article = articledao.getArticleByID(aid);
+        model.addAttribute("article",article);
+        return "article-detail";
+    }
+
+    @GetMapping("/article-delete/{aid}")
+    public String articleDelete(@PathVariable int aid, Model model) {
+        articledao.delete(aid);
+        return "redirect:/article-list";
+    }
+
+    @GetMapping("/article-edit/{aid}")
+    public String articleEdit(@PathVariable int aid, Model model) {
+        Article article = articledao.getArticleByID(aid);
+        model.addAttribute("article",article);
+        return "article-edit";
+    }
+
+
+    @PostMapping("/process-article-edit/{aid}")
+    public String processArticleEdit(@ModelAttribute("article") Article article, @PathVariable int aid, Model model, HttpSession session, Principal principal)
+    {
+        try {
+
+            int n = article.getContent().length();
+            if(article.getContent().charAt(0)==',')
+                article.setContent(article.getContent().substring(1,n));
+
+            Article prevArticle = articledao.getArticleByID(aid);
+            article.setId(aid);
+            article.setDate(prevArticle.getDate());
+            articledao.update(article);
+//            article = articledao.getArticleByID(article.getId());
+//            model.addAttribute("article",article);
+            session.setAttribute("message",new Message("Edit successful","alert-success"));
+            return "redirect:/article-list";
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            article.setId(aid);
+            article = articledao.getArticleByID(aid);
+//            model.addAttribute("article",article);
+            session.setAttribute("message", new Message("Something went Wrong!! " + e.getMessage(), "alert-danger"));
+            return "redirect:/article-list";
+        }
+    }
+
+
+
+    @GetMapping("/product-delete/{pid}")
+    public String productDelete(@PathVariable int pid, Model model) {
+        productdao.delete(pid);
+        return "redirect:/products";
+    }
+
+
+    @GetMapping("/product-edit/{pid}")
+    public String productEdit(@PathVariable int pid, Model model) {
+        Product product = productdao.getProductByID(pid);
+        List<Category> categories = categorydao.getAllCategories();
+        model.addAttribute("product",product);
+        model.addAttribute("categories",categories);
+        return "product-edit";
+    }
+
+    @GetMapping("/product-add")
+    public String productAdd(Model model) {
+        model.addAttribute("product",new Product());
+        List<Category> categories = categorydao.getAllCategories();
+        model.addAttribute("categories",categories);
+        return "product-add";
+    }
+
+    @PostMapping("/process-product-add")
+    public String processProductAdd(@ModelAttribute("product") Product product, @RequestParam("productImage") MultipartFile file, Model model, HttpSession session) {
+
+        try {
+
+            if(file.isEmpty())
+            {
+                product.setProdImage("chocolate.jpg");
+            }
+            else
+            {
+                product.setProdImage(file.getOriginalFilename());
+                File saveFile = new ClassPathResource("static/img/product").getFile();
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            productdao.save(product);
+
+            model.addAttribute("product",new Product());
+            List<Category> categories = categorydao.getAllCategories();
+            model.addAttribute("categories",categories);
+            session.setAttribute("message",new Message("Added successfully","alert-success"));
+            return "product-add";
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            model.addAttribute("product",product);
+            List<Category> categories = categorydao.getAllCategories();
+            model.addAttribute("categories",categories);
+            session.setAttribute("message", new Message("Something went Wrong!! " + e.getMessage(), "alert-danger"));
+            return "product-add";
+        }
+    }
+
+    @PostMapping("/process-product-edit/{pid}")
+    public String processProductEdit(@ModelAttribute("product") Product product,@PathVariable int pid, @RequestParam("productImage") MultipartFile file, Model model, HttpSession session) {
+
+        try {
+            Product origProduct = productdao.getProductByID(pid);
+            product.setId(pid);
+
+            if(file.isEmpty())
+            {
+                product.setProdImage(origProduct.getProdImage());
+            }
+            else
+            {
+                product.setProdImage(file.getOriginalFilename());
+                File saveFile = new ClassPathResource("static/img/product").getFile();
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            productdao.update(product);
+//            product = productdao.getProductByID(pid);
+
+//            model.addAttribute("product",product);
+//            List<Category> categories = categorydao.getAllCategories();
+//            model.addAttribute("categories",categories);
+            session.setAttribute("message",new Message("Added successfully","alert-success"));
+            return "redirect:/product-detail/" + String.valueOf(pid);
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            product = productdao.getProductByID(pid);
+            model.addAttribute("product",product);
+            List<Category> categories = categorydao.getAllCategories();
+            model.addAttribute("categories",categories);
+            session.setAttribute("message", new Message("Something went Wrong!! " + e.getMessage(), "alert-danger"));
+            return "product-edit";
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 }

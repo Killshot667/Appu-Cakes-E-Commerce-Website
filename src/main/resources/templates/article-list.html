@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+
+    .fa {
+        padding: 20px;
+        font-size: 30px;
+        width: 30px;
+        text-align: center;
+        text-decoration: none;
+        margin: 5px 2px;
+        border-radius: 50%;
+    }
+    /*.fa-facebook {*/
+    /*    background: #3B5998;*/
+    /*    color: white;*/
+    /*}*/
+
+    /*.fa-twitter {*/
+    /*    background: #55ACEE;*/
+    /*    color: white;*/
+    /*}*/
+    /*.fa-instagram {*/
+    /*    background: #125688;*/
+    /*    color: white;*/
+    /*}*/
+
+
+    * {
+    box-sizing: border-box;
+    }
+
+    /* Add a gray background color with some padding */
+    /*body {*/
+    /*font-family: Arial;*/
+    /*padding: 20px;*/
+    /*background: #f1f1f1;*/
+    /*}*/
+
+    /* Header/Blog Title */
+    .header {
+    padding: 30px;
+    font-size: 40px;
+    text-align: center;
+    background: white;
+    }
+
+    /* Create two unequal columns that floats next to each other */
+    /* Left column */
+    .leftcolumn {
+    float: left;
+    width: 75%;
+    }
+
+    /* Right column */
+    .rightcolumn {
+    float: left;
+    width: 23%;
+    padding-left: 20px;
+    }
+
+    /* Fake image */
+    .fakeimg {
+    background-color: #aaa;
+    width: 100%;
+    padding: 20px;
+    }
+
+    /* Add a card effect for articles */
+    .card {
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+    content: "";
+    display: table;
+    clear: both;
+    }
+
+    /* Footer */
+    .footer {
+    padding: 20px;
+    text-align: center;
+    background: #ddd;
+    margin-top: 20px;
+    }
+
+    /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+    @media screen and (max-width: 800px) {
+    .leftcolumn, .rightcolumn {
+    width: 100%;
+    padding: 0;
+    }
+    }
+
+    .product-tumb {
+        /*display: flex;*/
+        /*align-items: center;*/
+        /*justify-content: center;*/
+        height: 300px;
+        /*padding: 50px;*/
+        /*background: #f0f0f0;*/
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden
+    }
+
+    .product-tumb img {
+        /*max-width: 100%;*/
+        /*max-height: 300px;*/
+
+        /*flex-shrink: 0;*/
+        /*min-width: 100%;*/
+        /*min-height: 100%*/
+
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+
+    }
+
+    .goright {
+        float: right;
+        /*width: 100px;*/
+    }
+    </style>
+
+</head>
+<body>
+<div th:replace="base::navbar(${currUser})">
+</div>
+
+
+<div class="header">
+    <h2>Gourmet</h2>
+</div>
+<div th:if="${currUser != null}">
+    <div th:if="${currUser.role == 'ROLE_ADMIN'}">
+<br>
+<div class="text-center">
+    <button type="button" class="btn btn-primary"><a style="color: white" th:href="@{/admin/article-add}">Add</a></button>
+</div>
+<br>
+</div>
+</div>
+<div class="row">
+    <div class="leftcolumn" style="margin-left: 10px">
+        <div class="card" style="margin-left: 10px" th:each="article,status : ${articles}">
+            <h2><span th:text="${article.title}"></span></h2>
+            <h5 th:text="${article.date}"></h5>
+<!--            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>-->
+        <div th:utext="${article.content}"></div>
+
+
+<!--            <button th:if="${currUser != null and currUser.role == 'ROLE_ADMIN'}" class="btn btn-primary goright"><a style="color: white" th:href="@{'/admin/article-delete/' + ${article.id}}">Delete</a></button>-->
+<!--            <br>-->
+<!--            <button th:if="${currUser != null and currUser.role == 'ROLE_ADMIN'}" class="btn btn-success goright"><a style="color: white" th:href="@{'/admin/article-edit/' + ${article.id}}">Edit</a>-->
+            <a th:if="${currUser != null and currUser.role == 'ROLE_ADMIN'}" role="button" class="btn btn-primary" style="color: white" th:href="@{'/admin/article-delete/' + ${article.id}}">Delete</a>
+            <br>
+            <a th:if="${currUser != null and currUser.role == 'ROLE_ADMIN'}" role="button" class="btn btn-success" style="color: white" th:href="@{'/admin/article-edit/' + ${article.id}}">Edit</a>
+        </div>
+    </div>
+    <div class="rightcolumn">
+        <div class="card">
+            <h2>About Me</h2>
+            <div class="product-tumb"><img th:src="@{img/author.jpeg}"></div>
+            <p>Hello yall. Its me Latha Sreekumar, travelling enthusiast and cake extraordinaire. Appu's Cake is my very own newly opened cake store, where I sell homemade cakes and other
+            deserts. Gourmet forms my blogging section where I can share with you all my personal recipes and other views in the world of cakes. Stay tuned for more content</p>
+        </div>
+        <div class="card">
+            <h3>Follow Me</h3>
+            <p><a href="#" class="fa fa-facebook"></a>
+                <a href="#" class="fa fa-twitter"></a>
+                <a href="#" class="fa fa-instagram"></a></p>
+
+
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,5 +1,8 @@
 package com.appu.appuscake1.controller;
 
+import com.appu.appuscake1.dao.Articledao;
+import com.appu.appuscake1.dao.Categorydao;
+import com.appu.appuscake1.dao.Productdao;
 import com.appu.appuscake1.dao.Userdao;
 import com.appu.appuscake1.helper.Message;
 import com.appu.appuscake1.model.User;
@@ -7,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
@@ -20,10 +20,19 @@ import java.security.Principal;
 public class UserController {
 
     @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
     private Userdao userdao;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private Productdao productdao;
+
+    @Autowired
+    private Categorydao categorydao;
+
+    @Autowired
+    private Articledao articledao;
 
     //method for adding common data to response
     @ModelAttribute
@@ -61,7 +70,6 @@ public class UserController {
 
             user.setId(currUser.getId());
             user.setRole(currUser.getRole());
-            user.setProfileImage(currUser.getProfileImage());
             user.setPassword(currUser.getPassword());
 
             userdao.update(user);
@@ -80,6 +88,17 @@ public class UserController {
             return "redirect:/user/profile_edit";
         }
     }
+
+    @GetMapping("/add-cart/{pid}")
+    public String addCart(@PathVariable int pid, Model model,Principal principal) {
+        User currUser = userdao.getUserByEmail(principal.getName());
+        productdao.addToCart(currUser.getId(), pid);
+
+        return "redirect:/products";
+    }
+
+
+
 
 
 }

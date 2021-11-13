@@ -1,5 +1,6 @@
 package com.appu.appuscake1.dao;
 
+import com.appu.appuscake1.model.Product;
 import com.appu.appuscake1.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,8 +24,8 @@ public class Userdao {
 
 
     public void save(User user){
-        String sql="insert into User (name,email,password,role,contactNo,address,city,profileImage) values (?,?,?,?,?,?,?,?)";
-        jt.update(sql,user.getName(),user.getEmail(),user.getPassword(),user.getRole(),user.getContactNo(),user.getAddress(),user.getCity(),user.getProfileImage());
+        String sql="insert into User (name,email,password,role,contactNo,address,city) values (?,?,?,?,?,?,?)";
+        jt.update(sql,user.getName(),user.getEmail(),user.getPassword(),user.getRole(),user.getContactNo(),user.getAddress(),user.getCity());
 
     }
 
@@ -48,11 +49,21 @@ public class Userdao {
         }
     }
 
+    public List<User> getAllCustomers() {
+        String sql = "SELECT * FROM Product where role == 'ROLE_USER'";
+        return jt.query(sql, new BeanPropertyRowMapper<>(User.class));
+    }
+
 
 
     public void update(User user) {
-        String sql="update User set name=?, email=?, password=?, role=?, contactNo=?, address=?, city=?, profileImage=? where id=?";
-        jt.update(sql,user.getName(),user.getEmail(),user.getPassword(),user.getRole(),user.getContactNo(),user.getAddress(),user.getCity(),user.getProfileImage(),user.getId());
+        String sql="update User set name=?, email=?, password=?, role=?, contactNo=?, address=?, city=?, where id=?";
+        jt.update(sql,user.getName(),user.getEmail(),user.getPassword(),user.getRole(),user.getContactNo(),user.getAddress(),user.getCity(),user.getId());
+    }
+
+    public void delete(int id) {
+        String sql = "DELETE FROM User WHERE id = ?";
+        jt.update(sql, id);
     }
 
 

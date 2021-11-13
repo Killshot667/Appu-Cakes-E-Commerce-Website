@@ -1,48 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Signin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-<section>
+<div th:replace="base::navbar(${currUser})">
+</div>
 
 
-    <div class="card" style="width: 50rem;margin: auto;">
-        <div class="card-body">
-            <h5 class="card-title text-center">Login</h5>
-
-
-
-                <div class="alert alert-danger" th:if="${param.error}">
-                    Invalid username or password
-                </div>
-                <div class="alert alert-danger" th:if="${param.logout}">
-                    Logged out
-                </div>
-                <form th:action="@{/dologin}" method="post">
-                    <div class="form-group">
-                        <label>Email address</label>
-                        <input type="email" class="form-control" name="username" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" class="form-control" name="password" required>
-                    </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" name="remember-me">
-                        <label class="form-check-label">Remember me</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-
-
-                <br>
-            <a href="#" class="card-link">Forgot password?</a>
-            <a th:href="@{/signup}" class="card-link">Register here</a>
+<div class="card" style="width: 50rem;margin: 100px auto;">
+    <div class="card-body">
+        <h5 class="card-title text-center">Login</h5>
+        <div class="alert alert-danger" th:if="${param.error}">
+            Invalid username or password
         </div>
-    </div>
-</section>
+        <div class="alert alert-danger" th:if="${param.logout}">
+            Logged out
+        </div>
+        <form th:action="@{/dologin}" method="post">
+            <div class="form-group">
+                <label>Email address</label>
+                <input type="email" class="form-control" name="username" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" name="remember-me">
+                <label class="form-check-label">Remember me</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
 
+
+        <br>
+        <!--            <a href="#" class="card-link">Forgot password?</a>-->
+        <a th:href="@{/signup}" class="card-link">Register here</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 </body>
 </html>
+
+

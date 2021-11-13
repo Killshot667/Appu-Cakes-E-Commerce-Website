@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.annotation.Resource;
+
 @Configuration
 @EnableWebSecurity
 public class MyConfig extends WebSecurityConfigurerAdapter {
@@ -18,6 +20,9 @@ public class MyConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService getUserDetailService() {
         return new UserDetailsServiceImpl();
     }
+
+    @Resource
+    UserDetailsService userDetailsService;
 
 
     @Bean
@@ -44,11 +49,13 @@ public class MyConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").antMatchers("/user/**").hasRole("USER").antMatchers("/**").permitAll().and().formLogin().loginPage("/signin")
                 .loginProcessingUrl("/dologin")
                 .defaultSuccessUrl("/")
-                .and().csrf()
+                .and()
+                .rememberMe().userDetailsService(this.getUserDetailService())
+                .and().csrf().disable();
 //                .and()
 //                .rememberMe()
 //                .key("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
-                .disable();
+//                .disable();
 
     }
 }

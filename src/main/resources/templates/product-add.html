@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Homepage</title>
+    <title>Category Add</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -14,51 +14,55 @@
 <div class="card" style="width: 50rem;margin: 100px auto;">
     <div class="card-body">
 
-        <h5 class="card-title text-center">Register</h5>
+        <h5 class="card-title text-center">Add Product</h5>
 
         <div th:if="${session.message}" th:classappend="${session.message.type}" role="alert">
             <p class = "text-center" th:text="${session.message.content}"></p>
             <th:block th:text="${#session.removeAttribute('message')}"></th:block>
         </div>
 
-        <form action="" th:action="@{/do_register}" method="post" th:object="${user}">
+        <form action="" th:action="@{/admin/process-product-add}" method="post" th:object="${product}" enctype="multipart/form-data">
             <div class="form-group">
-                <label>Email address</label>
-                <input name="email" type="email" class="form-control" th:value="${user.email}" required>
+                <label>Product Name</label>
+                <input name="name" type="text" class="form-control" th:value="${product.name}" required>
             </div>
             <div class="form-group">
-                <label>Name</label>
-                <input name="name" type="text" class="form-control" th:value="${user.name}" required>
+                <label>Product Description</label>
+                <textarea name="description" class="form-control" rows="10" th:text="${product.description}" required></textarea>
             </div>
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" class="form-control" name="password" th:value="${user.password}" required>
+                <label>Discount Percentage</label>
+                <input name="discount" type="number" class="form-control" th:value="${product.discount}" required>
             </div>
             <div class="form-group">
-                <label>Contact Number</label>
-                <input name="contactNo" type="text" class="form-control" th:value="${user.contactNo}" required>
+                <label>Product Availability</label>
+                <input name="availability" type="number" class="form-control" th:value="${product.availability}" required>
             </div>
             <div class="form-group">
-                <label>City</label>
-                <input name="city" type="text" class="form-control" th:value="${user.city}" required>
+                <label>Product Price</label>
+                <input name="price" type="number" class="form-control" th:value="${product.price}" required>
             </div>
+
             <div class="form-group">
-                <label>Address</label>
-                <textarea name="address" class="form-control" rows="4" th:value="${user.address}" required></textarea>
+                <label>Product Category</label>
+                <select class="form-control" th:field="${product.categoryid}">
+                    <option th:each="category:${categories}" name="id" th:value="${category.id}"> [[${category.name}]]</option>
+                </select>
             </div>
+
+            <div class="form-group">
+                <label >Product Image (File size limit is 256KB)</label>
+                <input type="file" name = "productImage" class="form-control-file">
+            </div>
+
 
             <button type="submit" class="btn btn-primary">Submit</button>
             <button type="reset" class="btn btn-success">Reset</button>
 
-
         </form>
 
-        <br>
-
-        <h7>Already have an account? <a th:href="@{/signin}">Log in</a></h7>
     </div>
 </div>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

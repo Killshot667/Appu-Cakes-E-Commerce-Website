@@ -9,15 +9,9 @@ public class User {
     private String contactNo;
     private String address;
     private String city;
-    private String profileImage;
 
-    public String getProfileImage() {
-        return profileImage;
-    }
 
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
+
 
     public int getId() {
         return id;
@@ -94,7 +88,6 @@ public class User {
                 ", contactNo='" + contactNo + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
-                ", profileImage='" + profileImage + '\'' +
                 '}';
     }
 }
