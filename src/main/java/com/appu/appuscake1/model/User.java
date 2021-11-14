@@ -9,9 +9,24 @@ public class User {
     private String contactNo;
     private String address;
     private String city;
+    private String houseno;
+    private String pincode;
 
+    public String getHouseno() {
+        return houseno;
+    }
 
+    public void setHouseno(String houseno) {
+        this.houseno = houseno;
+    }
 
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
 
     public int getId() {
         return id;

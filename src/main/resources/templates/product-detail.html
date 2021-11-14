@@ -564,8 +564,8 @@
 <!--            </nav>-->
             <div class="product_name"><span th:text="${product.name}"></span></div>
             <div class="product-rating"><span class="badge badge-success"><span class="rating-review" th:text="${category.name}"></span></span></div>
-            <div> <span class="product_price" th:text="'₹ ' + ${net_amount}"></span> <strike class="product_discount"> <span style='color:black' th:text="${'₹ ' + product.price}"><span> </strike> </div>
-            <div> <span class="product_saved">You Saved:</span> <span style='color:black' th:text="'₹ ' + ${product.price - net_amount}"><span> </div>
+            <div> <span class="product_price" th:text="'Rs. ' + ${net_amount}"></span> <strike class="product_discount"> <span style='color:black' th:text="${'Rs. ' + product.price}"><span> </strike> </div>
+            <div> <span class="product_saved">You Saved:</span> <span style='color:black' th:text="'Rs. ' + ${product.price - net_amount}"><span> </div>
             <hr class="singleline">
             <div> <span class="product_info" th:text="${product.description}">EMI starts at ₹ 2,000. No Cost EMI Available</span></div>
             <div>

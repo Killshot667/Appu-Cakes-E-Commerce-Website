@@ -127,7 +127,7 @@
     <br>
 
     <div class="text-center" th:if="${currUser != null and currUser.role == 'ROLE_ADMIN'}">
-        <button type="button" class="btn btn-primary"><a style="color: white" th:href="@{/admin/product-add/}">Add Product</a></button>
+        <button type="button" class="btn btn-primary"><a style="color: white" th:href="@{/admin/product-add}">Add Product</a></button>
     </div>
     <br>
     <div class="row">
@@ -143,7 +143,7 @@
                     <h4><a th:href="@{'/product-detail/' + ${product.id}}" th:text="${product.name}"></a></h4>
                     <!--                        <p th:text=""></p>-->
                     <div class="product-bottom-details">
-                        <div class="product-price"><small><span th:text="'₹ ' + ${product.price}"></span></small><span th:text="'₹ '+${finalPrice.get(status.index)}"></span></div>
+                        <div class="product-price"><small><span th:text="'Rs. ' + ${product.price}"></span></small><span th:text="'Rs. '+${finalPrice.get(status.index)}"></span></div>
                         <div class="product-links">
                             <div th:if="${currUser != null}">
                                 <div th:if="${currUser.role == 'ROLE_USER'}">

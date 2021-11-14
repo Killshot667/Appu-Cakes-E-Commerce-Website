@@ -24,8 +24,8 @@ public class Userdao {
 
 
     public void save(User user){
-        String sql="insert into User (name,email,password,role,contactNo,address,city) values (?,?,?,?,?,?,?)";
-        jt.update(sql,user.getName(),user.getEmail(),user.getPassword(),user.getRole(),user.getContactNo(),user.getAddress(),user.getCity());
+        String sql="insert into User (name,email,password,role,contactNo,address,city,houseno,pincode) values (?,?,?,?,?,?,?,?,?)";
+        jt.update(sql,user.getName(),user.getEmail(),user.getPassword(),user.getRole(),user.getContactNo(),user.getAddress(),user.getCity(),user.getHouseno(),user.getPincode());
 
     }
 
@@ -57,8 +57,8 @@ public class Userdao {
 
 
     public void update(User user) {
-        String sql="update User set name=?, email=?, password=?, role=?, contactNo=?, address=?, city=?, where id=?";
-        jt.update(sql,user.getName(),user.getEmail(),user.getPassword(),user.getRole(),user.getContactNo(),user.getAddress(),user.getCity(),user.getId());
+        String sql="update User set name=?, email=?, password=?, role=?, contactNo=?, address=?, city=?, houseno=?, pincode=?, where id=?";
+        jt.update(sql,user.getName(),user.getEmail(),user.getPassword(),user.getRole(),user.getContactNo(),user.getAddress(),user.getCity(),user.getHouseno(),user.getPincode(),user.getId());
     }
 
     public void delete(int id) {

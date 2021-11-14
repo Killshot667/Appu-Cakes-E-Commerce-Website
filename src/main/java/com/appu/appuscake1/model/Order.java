@@ -10,6 +10,15 @@ public class Order {
     private Date delivery_date;
     private String status;
     private int cost;
+    private String mode;
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
 
     public int getId() {
         return id;

@@ -36,12 +36,20 @@
                 <input name="contactNo" type="text" class="form-control" th:value="${currUser.contactNo}" required>
             </div>
             <div class="form-group">
-                <label>City</label>
-                <input name="city" type="text" class="form-control" th:value="${currUser.city}" required>
+                <label>House no</label>
+                <input name="houseno" type="text" class="form-control" th:value="${currUser.houseno}" required>
             </div>
             <div class="form-group">
                 <label>Address</label>
                 <textarea name="address" class="form-control" rows="4" th:text="${currUser.address}" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>City</label>
+                <input name="city" type="text" class="form-control" th:value="${currUser.city}" required>
+            </div>
+            <div class="form-group">
+                <label>Pincode</label>
+                <input name="pincode" type="text" class="form-control" th:value="${currUser.pincode}" required>
             </div>
             <br>
             <button type="submit" class="btn btn-primary">Submit</button>

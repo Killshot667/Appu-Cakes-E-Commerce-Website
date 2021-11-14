@@ -88,7 +88,7 @@ public class HomeController {
     public String do_register(@ModelAttribute("user") User user, Model model, HttpSession session)
     {
         try {
-            user.setRole("ROLE_USER");
+            user.setRole("ROLE_ADMIN");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userdao.save(user);
             model.addAttribute("user",new User());
@@ -110,7 +110,7 @@ public class HomeController {
         if(searchBar==null || searchBar=="")
         productsAll = productdao.getAllAvailableProducts();
         else
-            productsAll = productdao.getAllAvailableProductsPattern(searchBar);
+            productsAll = productdao.getAllAvailableProductsPatternMulti(searchBar);
         List<Integer> toDisplay = new ArrayList<>();
         User currUser = null;
 
@@ -118,7 +118,6 @@ public class HomeController {
         if ( principal!=null && principal.getName()!=null) {
             currUser = userdao.getUserByEmail(principal.getName());
             toDisplay = productdao.getProductsInCart(currUser.getId());
-            System.out.println("yessssssssssss");
         }
             List<Category> categories = new ArrayList<>();
             Set<Integer> foo = new HashSet<Integer>(toDisplay);
