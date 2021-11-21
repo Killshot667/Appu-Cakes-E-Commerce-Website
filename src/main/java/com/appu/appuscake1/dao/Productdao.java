@@ -45,7 +45,7 @@ public class Productdao {
 
     public List<Product> getAllAvailableProductsPatternMulti(String searchBar) {
         String pattern = "%" + searchBar + "%";
-        String sql = "SELECT distinct p.id , p.name , p.description , p.prodImage, p.discount, p.categoryid, p.price, p.availability FROM Product as p,Category as c where p.availability > 0 and ((p.name like ?) or (c.name like ?))";
+        String sql = "SELECT distinct p.id , p.name , p.description , p.prodImage, p.discount, p.categoryid, p.price, p.availability FROM Product as p,Category as c where p.availability > 0 and p.categoryid = c.id and ((p.name like ?) or (c.name like ?))";
         List<Product> products = jt.query(sql,new Object[] { pattern,pattern }, new BeanPropertyRowMapper<>(Product.class));
         return products;
     }
