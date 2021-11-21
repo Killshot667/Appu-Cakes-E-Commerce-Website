@@ -9,8 +9,25 @@ public class User {
     private String contactNo;
     private String address;
     private String city;
+    private String houseno;
+    private String pincode;
 
-//    Getters
+    public String getHouseno() {
+        return houseno;
+    }
+
+    public void setHouseno(String houseno) {
+        this.houseno = houseno;
+    }
+
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
+
     public int getId() {
         return id;
     }
@@ -43,7 +60,6 @@ public class User {
         return city;
     }
 
-//    Setter
     public void setId(int id) {
         this.id = id;
     }
@@ -74,6 +90,20 @@ public class User {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", contactNo='" + contactNo + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                '}';
     }
 }
 

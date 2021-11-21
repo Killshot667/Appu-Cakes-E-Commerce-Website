@@ -1,0 +1,36 @@
+body {
+    background: #e2e2e2!important;
+}
+
+.my_profile_picture {
+    width: 35px;
+    height: 35px;
+    object-fit:cover;
+    border-radius:50%;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+
+
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+*
+{
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body
+{
+    font-family: 'Roboto', sans-serif;
+}
+a
+{
+    text-decoration: none;
+}

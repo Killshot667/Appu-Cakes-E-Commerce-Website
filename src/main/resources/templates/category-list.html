@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Category List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div th:replace="base::navbar(${currUser})">
+</div>
+
+<div class="card" style="margin: 100px auto;">
+    <div class="card-body">
+        <div class="text-center">
+            <h1>Categories</h1>
+        </div>
+
+        <div class="text-center">
+            <button type="button" class="btn btn-primary"><a style="color: white" th:href="@{/admin/category-add}">Add Category</a></button>
+        </div>
+        <br>
+        <br>
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Category Name</th>
+        <th scope="col">View</th>
+        <th scope="col">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="category,status : ${categories}">
+        <td><span th:text="${category.name}"></span></td>
+        <td><a th:href="@{'/admin/category-detail/' + ${category.id}}">View</a></td>
+        <td><a th:href="@{'/admin/category-delete/' + ${category.id}}">Delete</a></td>
+    </tr>
+
+    </tbody>
+</table>
+    </div>
+</div>
+
+<div th:replace="base::footer">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+</body>
+</html>
