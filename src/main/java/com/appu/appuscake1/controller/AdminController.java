@@ -1,15 +1,9 @@
 package com.appu.appuscake1.controller;
 
 
-import com.appu.appuscake1.dao.Articledao;
-import com.appu.appuscake1.dao.Categorydao;
-import com.appu.appuscake1.dao.Productdao;
-import com.appu.appuscake1.dao.Userdao;
+import com.appu.appuscake1.dao.*;
 import com.appu.appuscake1.helper.Message;
-import com.appu.appuscake1.model.Article;
-import com.appu.appuscake1.model.Category;
-import com.appu.appuscake1.model.Product;
-import com.appu.appuscake1.model.User;
+import com.appu.appuscake1.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,8 +19,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.sql.Date;
+import java.util.Set;
 
 @Controller
 @RequestMapping("admin")
@@ -46,6 +43,10 @@ public class AdminController {
 
     @Autowired
     private Articledao articledao;
+
+    @Autowired
+    private Orderdao orderdao;
+
 
     //method for adding common data to response
     @ModelAttribute
@@ -210,7 +211,7 @@ public class AdminController {
             articledao.update(article);
 //            article = articledao.getArticleByID(article.getId());
 //            model.addAttribute("article",article);
-            session.setAttribute("message",new Message("Edit successful","alert-success"));
+//            session.setAttribute("message",new Message("Edit successful","alert-success"));
             return "redirect:/article-list";
 
         } catch(Exception e) {
@@ -218,7 +219,7 @@ public class AdminController {
             article.setId(aid);
             article = articledao.getArticleByID(aid);
 //            model.addAttribute("article",article);
-            session.setAttribute("message", new Message("Something went Wrong!! " + e.getMessage(), "alert-danger"));
+//            session.setAttribute("message", new Message("Something went Wrong!! " + e.getMessage(), "alert-danger"));
             return "redirect:/article-list";
         }
     }
@@ -309,7 +310,7 @@ public class AdminController {
 //            model.addAttribute("product",product);
 //            List<Category> categories = categorydao.getAllCategories();
 //            model.addAttribute("categories",categories);
-            session.setAttribute("message",new Message("Added successfully","alert-success"));
+//            session.setAttribute("message",new Message("Added successfully","alert-success"));
             return "redirect:/product-detail/" + String.valueOf(pid);
 
         } catch(Exception e) {
@@ -324,12 +325,171 @@ public class AdminController {
     }
 
 
+    @GetMapping("/order-list")
+    public String orderList(Model model,Principal principal) {
+
+        List<Order> orders = orderdao.getAllOrders();
+        List<Order> placedOrders = new ArrayList<>();
+        List<Order> unplacedOrders = new ArrayList<>();
+        List<User> placedUsers = new ArrayList<>();
+        List<User> unplacedUsers = new ArrayList<>();
+
+        for(Order order : orders) {
+            User user = userdao.getUserByID(order.getCustomerid());
+            System.out.println(order.getStatus());
+            if(order.getStatus() == 1)
+            {placedOrders.add(order);
+                System.out.println("yes");
+                placedUsers.add(user);}
+            else{
+                unplacedOrders.add(order);
+                unplacedUsers.add(user); }
+        }
 
 
 
+        model.addAttribute("placedOrders",placedOrders);
+        model.addAttribute("unplacedOrders",unplacedOrders);
+        model.addAttribute("placedUsers",placedUsers);
+        model.addAttribute("unplacedUsers",unplacedUsers);
+
+        return "order-list";
+
+    }
+
+    @GetMapping("/order-detail/{oid}")
+    public String orderDetail(@PathVariable int oid,Model model,Principal principal) {
+
+        Order order = orderdao.getOrderByID(oid);
+        List<Integer> finalPrice = new ArrayList<>();
+        List<OrderItem> orderItems = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
+        List<Category> categories = new ArrayList<>();
+        int totalAmount = 0;
+        int netAmount = 0;
+        orderItems = orderdao.getAllOrderItems(order.getId());
+
+        for(OrderItem orderItem: orderItems)
+        {
+            products.add(productdao.getProductByID(orderItem.getProductid()));
+        }
+
+        for(Product product: products)
+        {
+            Category category = categorydao.getCategoryByID(product.getCategoryid());
+            categories.add(category);
+            totalAmount = totalAmount + product.getPrice();
+            float net_discount = product.getDiscount() + category.getDiscount();
+            int net_amount = (int) (product.getPrice() - (net_discount/100.0)*product.getPrice());
+            finalPrice.add(net_amount);
+            netAmount = netAmount + net_amount;
+        }
+
+        model.addAttribute("products",products);
+        model.addAttribute("categories",categories);
+        model.addAttribute("orderItems",orderItems);
+        model.addAttribute("finalPrice",finalPrice);
+        model.addAttribute("order",order);
+        model.addAttribute("totalAmount",totalAmount);
+        model.addAttribute("netAmount",netAmount);
+
+        return "order-detail";
+
+    }
+
+    @GetMapping("/order-change-delivered/{oid}")
+    public String orderChangeDelivery(@PathVariable int oid, Model model,Principal principal) {
+
+        Order order = orderdao.getOrderByID(oid);
+        order.setStatus(2);
+        long millis=System.currentTimeMillis();
+        Date date=new java.sql.Date(millis);
+        order.setDelivery_date(date);
+        orderdao.update(order);
+        return "redirect:/admin/order-detail/" + oid;
+
+    }
+
+    @GetMapping("/order-change-placed/{oid}")
+    public String orderChangePlaced(@PathVariable int oid, Model model,Principal principal) {
+
+        Order order = orderdao.getOrderByID(oid);
+        order.setStatus(1);
+        order.setDelivery_date(null);
+        orderdao.update(order);
+        return "redirect:/admin/order-detail/" + oid;
+
+    }
+
+    @GetMapping("/customer-list")
+    public String customerList(Model model,Principal principal) {
+
+        List<User> customers = userdao.getAllCustomers();
+        model.addAttribute("customers",customers);
+
+        return "customer-list";
+
+    }
+
+    @GetMapping("/customer-detail/{uid}")
+    public String customerDetail(@PathVariable int uid, Model model,Principal principal) {
+
+        User user = userdao.getUserByID(uid);
+        model.addAttribute("user",user);
+        return "customer-detail";
+
+    }
+
+    @GetMapping("/customer-delete/{uid}")
+    public String customerDelete(@PathVariable int uid, Model model,Principal principal) {
+
+        userdao.delete(uid);
+        return "redirect:/admin/customer-list";
+
+    }
+
+    @GetMapping("/out-of-stock")
+    public String productsNonAvailable(Model model, Principal principal) {
+
+        List<Product> productsAll = productdao.getAllNonAvailableProducts();
+//        if(searchBar==null || searchBar=="")
+//            productsAll = productdao.getAllAvailableProducts();
+//        else
+//            productsAll = productdao.getAllAvailableProductsPatternMulti(searchBar);
+        List<Integer> toDisplay = new ArrayList<>();
+        User currUser = null;
 
 
+        if ( principal!=null && principal.getName()!=null) {
+            currUser = userdao.getUserByEmail(principal.getName());
+            toDisplay = productdao.getProductsInCart(currUser.getId());
+        }
+        List<Category> categories = new ArrayList<>();
+        Set<Integer> foo = new HashSet<Integer>(toDisplay);
+        List<Boolean> check = new ArrayList<Boolean>();
+        List<Integer> finalPrice = new ArrayList<>();
 
+        for(Product product: productsAll){
+            if(foo.contains(product.getId()))
+                check.add(false);
+            else
+                check.add(true);
+            Category category = categorydao.getCategoryByID(product.getCategoryid());
+            categories.add(category);
+            float net_discount = product.getDiscount() + category.getDiscount();
+            int net_amount = (int) (product.getPrice() - (net_discount/100.0)*product.getPrice());
+            finalPrice.add(net_amount);
+
+            model.addAttribute("products",productsAll);
+            model.addAttribute("check",check);
+            model.addAttribute("categories",categories);
+            model.addAttribute("finalPrice",finalPrice);
+            model.addAttribute("currUser",currUser);
+
+        }
+        return "products";
+    }
 
 
 }
+

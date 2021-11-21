@@ -120,6 +120,7 @@ public class UserController {
         for(Cart cart: carts) {
 
             products.add(productdao.getProductByID(cart.getProductid()));
+            System.out.println(cart.getQuantity());
         }
 
         for(Product product: products)
@@ -129,6 +130,7 @@ public class UserController {
             float net_discount = product.getDiscount() + category.getDiscount();
             int net_amount = (int) (product.getPrice() - (net_discount/100.0)*product.getPrice());
             finalPrice.add(net_amount);
+
         }
         model.addAttribute("products",products);
         model.addAttribute("categories",categories);
@@ -187,8 +189,9 @@ public class UserController {
             Date date=new java.sql.Date(millis);
             order.setOrder_date(date);
             order.setPayment_date(date);
+            order.setDelivery_date(null);
             order.setCustomerid(currUser.getId());
-            order.setStatus("Placed");
+            order.setStatus(1);
 
             List<Cart> carts = productdao.getAllAvailableCarts(currUser.getId());
             List<Product> products = new ArrayList<>();
@@ -225,7 +228,7 @@ public class UserController {
             }
 
             productdao.deleteEntireCart(currUser.getId());
-            session.setAttribute("message",new Message("Edit successful","alert-success"));
+//            session.setAttribute("message",new Message("Edit successful","alert-success"));
             return "redirect:/user/past-orders";
 
         } catch(Exception e) {
@@ -233,6 +236,7 @@ public class UserController {
             session.setAttribute("message", new Message("Something went Wrong!! " + e.getMessage(), "alert-danger"));
             return "redirect:/user/paymentView";
         }
+
     }
 
     @GetMapping("/past-orders")
@@ -310,14 +314,12 @@ public class UserController {
 
     }
 
+    @PostMapping("/cart-quantity-update/{pid}")
+    public String processQuantityUpdate(@PathVariable int pid, Model model, HttpSession session, Principal principal, @RequestParam("i") int i)
+    {
+        User currUser = userdao.getUserByEmail(principal.getName());
+        productdao.updateCart(currUser.getId(), pid, i);
 
-
-
-
-
-
-
-
-
-
+        return "redirect:/user/cart";
+    }
 }

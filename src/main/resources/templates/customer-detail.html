@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Category Add</title>
+    <title>Profile View</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -11,53 +11,46 @@
 <div th:replace="base::navbar(${currUser})">
 </div>
 
+
 <div class="card" style="width: 50rem;margin: 100px auto;">
     <div class="card-body">
 
-        <h5 class="card-title text-center">Edit Product</h5>
+        <h5 class="card-title text-center">Customer Profile</h5>
 
         <div th:if="${session.message}" th:classappend="${session.message.type}" role="alert">
             <p class = "text-center" th:text="${session.message.content}"></p>
             <th:block th:text="${#session.removeAttribute('message')}"></th:block>
         </div>
 
-        <form action="" th:action="@{'/admin/process-product-edit/' + ${product.id}}" method="post" th:object="${product}" enctype="multipart/form-data">
+        <form action="" th:object="${user}">
             <div class="form-group">
-                <label>Product Name</label>
-                <input name="name" type="text" class="form-control" th:value="${product.name}" required>
+                <label>Email address</label>
+                <input name="email" type="email" class="form-control" th:value="${user.email}" required readonly>
             </div>
             <div class="form-group">
-                <label>Product Description</label>
-                <textarea name="description" class="form-control" rows="10" th:text="${product.description}" required></textarea>
+                <label>Name</label>
+                <input name="name" type="text" class="form-control" th:value="${user.name}" required readonly>
             </div>
             <div class="form-group">
-                <label>Discount Percentage</label>
-                <input name="discount" type="number" class="form-control" th:value="${product.discount}" required>
+                <label>Contact Number</label>
+                <input name="contactNo" type="text" class="form-control" th:value="${user.contactNo}" required readonly>
             </div>
             <div class="form-group">
-                <label>Product Availability</label>
-                <input name="availability" type="number" class="form-control" th:value="${product.availability}" required>
+                <label>House no</label>
+                <input name="houseno" type="text" class="form-control" th:value="${user.houseno}" required readonly>
             </div>
             <div class="form-group">
-                <label>Product Price</label>
-                <input name="price" type="number" class="form-control" th:value="${product.price}" required>
+                <label>Address</label>
+                <textarea name="address" class="form-control" rows="4" th:text="${user.address}" readonly></textarea>
             </div>
-
             <div class="form-group">
-                <label>Product Category</label>
-                <select class="form-control" th:field="${product.categoryid}">
-                    <option th:each="category:${categories}" name="id" th:value="${category.id}" th:selected="${product.categoryid == category.id} ? 'selected'"> [[${category.name}]]</option>
-                </select>
+                <label>City</label>
+                <input name="city" type="text" class="form-control" th:value="${user.city}" required readonly>
             </div>
-
             <div class="form-group">
-                <label >Product Image (File size limit is 256KB)</label>
-                <input type="file" name = "productImage" class="form-control-file">
+                <label>Pincode</label>
+                <input name="pincode" type="text" class="form-control" th:value="${user.pincode}" required readonly>
             </div>
-
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-
         </form>
 
     </div>
@@ -66,8 +59,10 @@
 <div th:replace="base::footer">
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 </body>
 </html>
+
+
+

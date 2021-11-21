@@ -7,7 +7,6 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
     <style>
         .product-card {
             width: 380px;
@@ -127,7 +126,7 @@
     <br>
 
     <div class="text-center" th:if="${currUser != null and currUser.role == 'ROLE_ADMIN'}">
-        <button type="button" class="btn btn-primary"><a style="color: white" th:href="@{/admin/product-add}">Add Product</a></button>
+        <button type="button" class="btn btn-primary"><a style="color: white" th:href="@{/admin/product-add}">Add Product</a></button> <button type="button" class="btn btn-primary"><a style="color: white" th:href="@{/admin/out-of-stock}">Out of stock products</a></button>
     </div>
     <br>
     <div class="row">
@@ -142,17 +141,18 @@
                     <span class="product-catagory" th:text="${categories.get(status.index).name}"></span>
                     <h4><a th:href="@{'/product-detail/' + ${product.id}}" th:text="${product.name}"></a></h4>
                     <!--                        <p th:text=""></p>-->
+                    <h7><span th:text="${product.availability} + ' left in stock'"></span></h7>
                     <div class="product-bottom-details">
                         <div class="product-price"><small><span th:text="'Rs. ' + ${product.price}"></span></small><span th:text="'Rs. '+${finalPrice.get(status.index)}"></span></div>
                         <div class="product-links">
                             <div th:if="${currUser != null}">
                                 <div th:if="${currUser.role == 'ROLE_USER'}">
                                     <div th:if="${check.get(status.index) == true}">
-                                        <a th:href="@{'/user/add-cart/' + ${product.id}}"><i class="fa fa-shopping-cart"></i></a>
+                                        <a th:href="@{'/user/add-cart/' + ${product.id}}"><i class="fa fa-shopping-cart" style="color: black"></i></a>
                                     </div>
                                 </div>
                                 <div th:if="${currUser.role == 'ROLE_ADMIN'}">
-                                    <a th:href="@{'/admin/product-delete/' + ${product.id}}"><i class="fa fa-trash"></i></a>
+                                    <a th:href="@{'/admin/product-delete/' + ${product.id}}"><i class="fa fa-trash" style="color: black"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -163,6 +163,9 @@
 
 
     </div>
+</div>
+
+<div th:replace="base::footer">
 </div>
 
 

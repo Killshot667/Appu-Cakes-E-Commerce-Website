@@ -24,6 +24,11 @@ public class Productdao {
         List<Product> products = jt.query(sql, new BeanPropertyRowMapper<>(Product.class));
         return products;
     }
+    public List<Product> getAllNonAvailableProducts() {
+        String sql = "SELECT * FROM Product where availability = 0";
+        List<Product> products = jt.query(sql, new BeanPropertyRowMapper<>(Product.class));
+        return products;
+    }
 
     public List<Cart> getAllAvailableCarts(int id) {
         String sql = "SELECT * FROM Cart where customerid = ?";
@@ -46,18 +51,6 @@ public class Productdao {
     }
 
 
-//    public List<Cart> getCartbyID(String customerid){
-//        String sql="select * from Cart where CustomerID=?";
-//        return jt.query(sql, new Object[]{customerid},new RowMapper<Cart>(){
-//            public Cart mapRow(ResultSet row, int rowNum) throws SQLException {
-//                Cart cart = new Cart();
-//                cart.setCustomerID(row.getString("CustomerID"));
-//                cart.setProductid(row.getInt("ProductID"));
-//                cart.setQuantity(row.getInt("Quantity"));
-//                return cart;
-//            }
-//        });
-//    }
 
     public List<Integer> getAllAvailableProductsIds() {
         String sql = "SELECT id FROM Product where availability > 0";

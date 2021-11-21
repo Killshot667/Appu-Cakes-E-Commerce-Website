@@ -145,8 +145,8 @@
 </div>
 
 
-<div class="header">
-    <h2>Gourmet</h2>
+<div class="header" style="background-color: orange;">
+    <h1 style="font-weight: bold">Gourmet</h1>
 </div>
 <div th:if="${currUser != null}">
     <div th:if="${currUser.role == 'ROLE_ADMIN'}">
@@ -159,8 +159,8 @@
 </div>
 <div class="row">
     <div class="leftcolumn" style="margin-left: 10px">
-        <div class="card" style="margin-left: 10px" th:each="article,status : ${articles}">
-            <h2><span th:text="${article.title}"></span></h2>
+        <div class="card" style="margin-left: 10px; border: 1px solid black" th:each="article,status : ${articles}">
+            <h1 style="font-weight: bold;color: coral"><i><span th:text="${article.title}"></span></i></h1>
             <h5 th:text="${article.date}"></h5>
 <!--            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>-->
         <div th:utext="${article.content}"></div>
@@ -175,13 +175,13 @@
         </div>
     </div>
     <div class="rightcolumn">
-        <div class="card">
+        <div class="card" style="border: 1px solid black">
             <h2>About Me</h2>
             <div class="product-tumb"><img th:src="@{img/author.jpeg}"></div>
             <p>Hello yall. Its me Latha Sreekumar, travelling enthusiast and cake extraordinaire. Appu's Cake is my very own newly opened cake store, where I sell homemade cakes and other
             deserts. Gourmet forms my blogging section where I can share with you all my personal recipes and other views in the world of cakes. Stay tuned for more content</p>
         </div>
-        <div class="card">
+        <div class="card" style="border: 1px solid black">
             <h3>Follow Me</h3>
             <p><a href="#" class="fa fa-facebook"></a>
                 <a href="#" class="fa fa-twitter"></a>
@@ -190,6 +190,9 @@
 
         </div>
     </div>
+</div>
+
+<div th:replace="base::footer">
 </div>
 
 

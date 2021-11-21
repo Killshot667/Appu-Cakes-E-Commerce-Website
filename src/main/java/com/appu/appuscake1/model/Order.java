@@ -8,7 +8,7 @@ public class Order {
     private Date order_date;
     private Date payment_date;
     private Date delivery_date;
-    private String status;
+    private int status;
     private int cost;
     private String mode;
 
@@ -60,11 +60,11 @@ public class Order {
         this.delivery_date = delivery_date;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

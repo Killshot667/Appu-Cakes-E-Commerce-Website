@@ -13,6 +13,9 @@
 
 <div class="card" style="margin: 100px auto;">
     <div class="card-body">
+        <div class="text-center">
+            <h1>Categories</h1>
+        </div>
 
         <div class="text-center">
             <button type="button" class="btn btn-primary"><a style="color: white" th:href="@{/admin/category-add}">Add Category</a></button>
@@ -37,6 +40,9 @@
     </tbody>
 </table>
     </div>
+</div>
+
+<div th:replace="base::footer">
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

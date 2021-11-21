@@ -562,7 +562,7 @@
 <!--                <li class="breadcrumb-item active">Accessories</li>-->
 <!--              </ol>-->
 <!--            </nav>-->
-            <div class="product_name"><span th:text="${product.name}"></span></div>
+            <div class="product_name"><h2><span th:text="${product.name}"></span></h2></div>
             <div class="product-rating"><span class="badge badge-success"><span class="rating-review" th:text="${category.name}"></span></span></div>
             <div> <span class="product_price" th:text="'Rs. ' + ${net_amount}"></span> <strike class="product_discount"> <span style='color:black' th:text="${'Rs. ' + product.price}"><span> </strike> </div>
             <div> <span class="product_saved">You Saved:</span> <span style='color:black' th:text="'Rs. ' + ${product.price - net_amount}"><span> </div>
@@ -624,6 +624,9 @@
 
     </div>
   </div>
+</div>
+
+<div th:replace="base::footer">
 </div>
 
 

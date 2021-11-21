@@ -17,14 +17,18 @@
 
 <!--start navbar-->
 <div th:fragment="navbar(currUser)">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Appu's Cakes</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" th:href="@{/}"><h3 style="color:orange;">Appu's Cakes</h3></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <form style="margin-left: 600px;" class="form-inline my-2 my-lg-0" method="get" action="" th:action="@{/products}">
+            <input class="form-control mr-sm-2" type="search" name="searchBar" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/article-list}">Gourmet</a>
             </li>
@@ -54,6 +58,8 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" th:href="@{/products}">Products</a>
                             <a class="dropdown-item" th:href="@{/admin/category-list}">Categories</a>
+                            <a class="dropdown-item" th:href="@{/admin/order-list}">Orders</a>
+                            <a class="dropdown-item" th:href="@{/admin/customer-list}">Customers</a>
                             <a class="dropdown-item" th:href="@{/logout}">Logout</a>
                         </div>
                     </div>
@@ -73,13 +79,72 @@
             </li>
 
         </ul>
-        <form class="form-inline my-2 my-lg-0" method="get" action="" th:action="@{/products}">
-            <input class="form-control mr-sm-2" type="search" name="searchBar" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+
     </div>
 </nav>
 </div>
+
+<footer class="page-footer font-small special-color-dark pt-4 footer" th:fragment="footer" style="background-color: #5b5b5b">
+
+    <!-- Footer Elements -->
+    <div class="container">
+
+        <!-- Social buttons -->
+        <ul class="list-unstyled list-inline text-center">
+            <li class="list-inline-item">
+                <a class="btn-floating btn-fb mx-1">
+                    <i class="fab fa-facebook-f"> </i>
+                </a>
+            </li>
+            <li class="list-inline-item">
+                <a class="btn-floating btn-tw mx-1">
+                    <i class="fab fa-twitter"> </i>
+                </a>
+            </li>
+            <li class="list-inline-item">
+                <a class="btn-floating btn-gplus mx-1">
+                    <i class="fab fa-google-plus-g"> </i>
+                </a>
+            </li>
+            <li class="list-inline-item">
+                <a class="btn-floating btn-li mx-1">
+                    <i class="fab fa-linkedin-in"> </i>
+                </a>
+            </li>
+            <li class="list-inline-item">
+                <a class="btn-floating btn-dribbble mx-1">
+                    <i class="fab fa-dribbble"> </i>
+                </a>
+            </li>
+        </ul>
+        <!-- Social buttons -->
+
+    </div>
+    <!-- Footer Elements -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2021 Copyright:
+        <div>
+            <a th:href="@{/}"> Appu's Cakes</a>
+        </div>
+    </div>
+    <!-- Copyright -->
+
+</footer>
+
+
+<!--<footer class="page-footer font-small blue" th:fragment="footer">-->
+
+<!--    &lt;!&ndash; Copyright &ndash;&gt;-->
+<!--    <div class="footer-copyright text-center py-3">© 2020 Copyright:-->
+<!--        <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; Copyright &ndash;&gt;-->
+
+<!--</footer>-->
+
+
+
 
 <!--end navbar-->
 

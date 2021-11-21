@@ -1,5 +1,6 @@
 package com.appu.appuscake1.dao;
 
+import com.appu.appuscake1.model.Category;
 import com.appu.appuscake1.model.Product;
 import com.appu.appuscake1.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,16 +51,17 @@ public class Userdao {
     }
 
     public List<User> getAllCustomers() {
-        String sql = "SELECT * FROM Product where role == 'ROLE_USER'";
+        String sql = "SELECT * FROM User where role = 'ROLE_USER'";
         return jt.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
 
 
     public void update(User user) {
-        String sql="update User set name=?, email=?, password=?, role=?, contactNo=?, address=?, city=?, houseno=?, pincode=?, where id=?";
+        String sql="update User set name=?, email=?, password=?, role=?, contactNo=?, address=?, city=?, houseno=?, pincode=? where id=?";
         jt.update(sql,user.getName(),user.getEmail(),user.getPassword(),user.getRole(),user.getContactNo(),user.getAddress(),user.getCity(),user.getHouseno(),user.getPincode(),user.getId());
     }
+
 
     public void delete(int id) {
         String sql = "DELETE FROM User WHERE id = ?";

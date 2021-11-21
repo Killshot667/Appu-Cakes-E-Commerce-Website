@@ -88,7 +88,7 @@ public class HomeController {
     public String do_register(@ModelAttribute("user") User user, Model model, HttpSession session)
     {
         try {
-            user.setRole("ROLE_ADMIN");
+            user.setRole("ROLE_USER");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userdao.save(user);
             model.addAttribute("user",new User());
@@ -102,6 +102,8 @@ public class HomeController {
             return "redirect:/signup";
         }
     }
+
+
 
     @GetMapping("/products")
     public String products(Model model, @RequestParam(value = "searchBar",required = false) String searchBar, Principal principal) {
