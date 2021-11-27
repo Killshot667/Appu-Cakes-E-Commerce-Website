@@ -299,7 +299,7 @@ public class AdminController {
             else
             {
                 product.setProdImage(file.getOriginalFilename());
-                File saveFile = new ClassPathResource("img/product").getFile();
+                File saveFile = new ClassPathResource("static/img/product").getFile();
                 Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             }

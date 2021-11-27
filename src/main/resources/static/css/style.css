@@ -13,7 +13,12 @@ body {
     border-radius: 10px;
 }
 
-
+.footer-flexer {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');

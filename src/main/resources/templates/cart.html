@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Homepage</title>
+    <title>Cart</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -129,8 +129,8 @@
     <h1 class="text-center" style="font-weight: bold">Cart</h1>
     <br>
     <br>
-    <div th:if="${products == null or products.isEmpty()}">
-        <h4>Cart is empty</h4>
+    <div class="text-center" th:if="${products == null or products.isEmpty()}">
+        <h3>Cart is empty</h3>
     </div>
     <div th:if="${products != null and !products.isEmpty()}">
     <div class="row">

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Homepage</title>
+    <title>Order Detail</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -130,6 +130,7 @@
 <h2>Order Id : <span th:text="${order.id}"></span></h2>
 <br>
 <h5>Order Date: <span th:text="${order.order_date}"></span></h5>
+    <h5>Payment Date: <span th:text="${order.payment_date}"></span></h5>
 
 <div th:if="${order.status == 1}"><h5>Status: Order Placed</h5></div>
 <div th:if="${order.status == 2}"><h5>Status: Order Delivered</h5></div>
@@ -206,6 +207,8 @@
     </div>
 </div>
 </div>
+<br>
+<br>
 
 <div th:replace="base::footer">
 </div>

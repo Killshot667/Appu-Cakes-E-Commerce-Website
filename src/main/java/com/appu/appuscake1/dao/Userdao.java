@@ -1,5 +1,6 @@
 package com.appu.appuscake1.dao;
 
+import com.appu.appuscake1.model.Cart;
 import com.appu.appuscake1.model.Category;
 import com.appu.appuscake1.model.Product;
 import com.appu.appuscake1.model.User;
@@ -67,6 +68,13 @@ public class Userdao {
         String sql = "DELETE FROM User WHERE id = ?";
         jt.update(sql, id);
     }
+
+    public List<User> getUsersByMail(String email) {
+        String sql = "SELECT * FROM User where email = ?";
+        return jt.query(sql,new Object[] { email }, new BeanPropertyRowMapper<>(User.class));
+    }
+
+
 
 
 

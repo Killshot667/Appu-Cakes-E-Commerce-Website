@@ -87,6 +87,36 @@ public class HomeController {
     @PostMapping("/do_register")
     public String do_register(@ModelAttribute("user") User user, Model model, HttpSession session)
     {
+//        try {
+//            List<User> temp_list = userdao.getUsersByMail(user.getEmail());
+//            if(!temp_list.isEmpty() || temp_list != null)
+//            {
+//                model.addAttribute("user",user);
+//                session.setAttribute("message", new Message("Email already registered ", "alert-danger"));
+//                return "redirect:/signup";
+//            }
+//            user.setRole("ROLE_USER");
+//            user.setPassword(passwordEncoder.encode(user.getPassword()));
+//            userdao.save(user);
+//            model.addAttribute("user",new User());
+//            session.setAttribute("message",new Message("Registered successfully","alert-success"));
+//            return "redirect:/signup";
+//
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//            model.addAttribute("user",user);
+//            session.setAttribute("message", new Message("Something went Wrong!! " + e.getMessage(), "alert-danger"));
+//            return "redirect:/signup";
+//        }
+
+        List<User> temp_list = userdao.getUsersByMail(user.getEmail());
+            if(!temp_list.isEmpty() || temp_list != null)
+            {
+                model.addAttribute("user",user);
+                session.setAttribute("message", new Message("Email already registered ", "alert-danger"));
+                return "redirect:/signup";
+            }
+
         try {
             user.setRole("ROLE_USER");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
