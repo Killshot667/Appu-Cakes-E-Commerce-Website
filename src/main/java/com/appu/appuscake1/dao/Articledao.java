@@ -18,7 +18,7 @@ public class Articledao {
     JdbcTemplate jt;
 
     public List<Article> getAllArticles() {
-        String sql = "SELECT * FROM Article order by date desc";
+        String sql = "SELECT * FROM Article order by id desc";
         return jt.query(sql, new BeanPropertyRowMapper<>(Article.class));
     }
 

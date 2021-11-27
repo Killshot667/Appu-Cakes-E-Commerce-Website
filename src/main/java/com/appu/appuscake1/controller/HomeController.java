@@ -109,13 +109,13 @@ public class HomeController {
 //            return "redirect:/signup";
 //        }
 
-        List<User> temp_list = userdao.getUsersByMail(user.getEmail());
-            if(!temp_list.isEmpty() || temp_list != null)
-            {
-                model.addAttribute("user",user);
-                session.setAttribute("message", new Message("Email already registered ", "alert-danger"));
-                return "redirect:/signup";
-            }
+//        List<User> temp_list = userdao.getUsersByMail(user.getEmail());
+//            if(!temp_list.isEmpty() || temp_list != null)
+//            {
+//                model.addAttribute("user",user);
+//                session.setAttribute("message", new Message("Email already registered ", "alert-danger"));
+//                return "redirect:/signup";
+//            }
 
         try {
             user.setRole("ROLE_USER");
